@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>ChatBot</title>
@@ -29,9 +29,9 @@
 </div>
 
 </body>
-</html>
+</html> {% endcomment %}
 
-{% comment %} <link rel="stylesheet" href="/static/style.css">
+ <link rel="stylesheet" href="/static/style.css">
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -63,7 +63,7 @@
 
               <form action="text_input" method="post">
                 {% csrf_token %}
-                {% for i in data %}
+                {% comment %} {% for i in data %} {% endcomment %}
                 <div class="card-body">
     
                   <div class="d-flex flex-row justify-content-start mb-4">
@@ -111,7 +111,7 @@
                   </div>
       
                 </div>
-                {% endfor %}
+                {% comment %} {% endfor %} {% endcomment %}
               </form>
             </div>
     
@@ -124,4 +124,4 @@
   </div>
   
 </body>
-</html> {% endcomment %}
+</html> 
