@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+<title>Mortgage Assistant</title>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.3/tailwind.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.min.css'>
+<link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+
+<div x-data="chatBot()">
+    <div class="flex-1 p:2 sm:p-1 justify-between flex flex-col customCss">
+        <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+            <div class="flex ml-auto">
+                <button type="button" class="inline-flex items-center justify-around rounded-md h-8 w-36 mr-3 transition duration-200 ease-in-out text-sm text-gray-600 border-2 hover:bg-gray-200 focus:outline-none" @click.prevent="updateChat($refs.input)">
+                     <img src="./static/img/share.png" alt="..." class="w-4 opacity-95"> Share Chatbot
+                </button>
+                 <button id = "ResetButton" type="button" class="inline-flex items-center text-sm text-gray-600 justify-around rounded-md h-8 w-24 transition duration-200 ease-in-out text-black border-2 hover:bg-gray-200 focus:outline-none">
+                     <img src="./static/img/reset.png" alt="..." class="w-4 opacity-50"> Reset
+                </button>
+            </div>
+            <template x-for="(message, key) in messages">
+
+                <div class="border-t-2 border-gray-100 pt-3">
+                    <div class="flex items-center" :class="message.from=='bot'?'':'justify-start'">
+                        <div class="flex flex-col space-y-2 text-md leading-tight max-w-full mx-2" :class="message.from=='bot'?'order-2 items-start':'order-2 items-end'">
+                            <div>
+                                <span class="px-4 py-3 inline-block" :class="message.from=='bot'?'rounded-bl-none bg-gray-100 text-black':'rounded-br-none bg-gray-100 text-black'" x-html="message.text"></span>
+                            </div>
+                        </div>
+                        <div><img :src="message.from=='bot'?'./static/img/chatbotIcon.png':'./static/img/user.png'" alt="" class="w-6 h-6 rounded-full" :class="message.from=='bot'?'order-1':'order-1'"></div>
+                        <div class="mx-l order-3 ml-auto flex gap-x-2">
+                            <a href="#"><img src="./static/img/like.png" class="w-5 hover:opacity-50"></a>
+                            <a href="#"><img src="./static/img/dislike.png" class="w-5 hover:opacity-50"></a>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <div x-show="botTyping" style="display: none;">
+                <div class="flex items-end">
+                    <div class="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
+                        <div><img src="./static/img/typing-animation-3x.gif" alt="..." class="w-16 ml-6 opacity-25"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-t-2 border-gray-200 px-4 py-4 mb-2 sm:mb-0">
+            <div class="relative flex">
+                <input type="text" placeholder="Type here..." autocomplete="off" autofocus="true" @keydown.enter="updateChat($event.target)" class="text-md w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 pr-16 bg-gray-100 border-2 border-gray-200 focus:border-gray-500 rounded-md py-2" x-ref="input" />
+                <div class="absolute right-2 items-center inset-y-0 hidden sm:flex">
+                    <button type="button" class="inline-flex items-center justify-center rounded-lg h-8 w-8 transition duration-200 ease-in-out text-white bg-blue-500 hover:bg-blue-600 focus:outline-none" @click.prevent="updateChat($refs.input)">
+                        <img class="sendarw" src="./static/img/right-arrow.png">
+                    </button>
+                </div>
+            </div>
+            <div class="text-gray-400 pl-2">0/500</div>
+
+        </div>
+    </div>
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.8.0/alpine.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script  src="../static/js/script.js"></script>
+<script>
+    var button = document.getElementById('ResetButton');
+button.addEventListener('click', function() {
+  window.location.href = '/';
+});
+</script>
+
+</body>
+</html>
