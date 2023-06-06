@@ -31,7 +31,6 @@
 </body>
 </html> {% endcomment %}
 
- <link rel="stylesheet" href="./static/css/style.css">
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -40,9 +39,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="./static/css/chat.css">
-    <link rel="stylesheet" href="./static/scripts/chat.js">
+    {% comment %} <link rel="stylesheet" href="{% static 'style.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/chat.css">
+    <link rel="stylesheet" href="/static/css/response.js">
+    <link rel="stylesheet" href="/static/scripts/chat.js">
+
 
 </head>
 <body>
@@ -63,8 +65,8 @@
                 <p class="mb-0 fw-bold">Live chat</p>
                 <i class="fas fa-times"></i>
               </div>
-
-              <form action="text_input" method="post">
+              
+              <form action="text_input" method="post" >
                 {% csrf_token %}
                 {% comment %} {% for i in data %} {% endcomment %}
                 <div class="card-body">
@@ -110,7 +112,7 @@
                   <div class="form-outline">
                     <textarea class="form-control" id="textAreaExample" rows="4" name="message"></textarea>
                     <label class="form-label " for="textAreaExample mt-4">Type your message</label>
-                    <button type="submit" class="btn btn-primary mt-4 ml-5" >Send</button> 
+                    <button type="submit" class="btn btn-primary mt-4 ml-5" onclick="chatBot()">Send</button> 
                   </div>
       
                 </div>
