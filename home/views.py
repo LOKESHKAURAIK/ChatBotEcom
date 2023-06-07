@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from langchain.prompts.prompt import PromptTemplate
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
+from .models import Chatbot
 import os
 import openai
 
@@ -94,10 +95,19 @@ def text_input(request):
     if request.method == "POST":
         user_input = request.POST["message"]
         response = generate_response(user_input)
+        bot = Chatbot.objects.create(user_input=user_input, bot_response=response)
+        bot.save()
+        data = Chatbot.objects.all()
+        print(data)
         # response1 = storing_response(user_input)
         # if response1:
         # print(response)
-    return render(request, "index.html",{"response" : response})
+    return render(request, "index.html",{"data" : data})
 
 def index(request):
-    return render(request,"index.html")
+    data = Chatbot.objects.all()
+    print(data)
+        # response1 = storing_response(user_input)
+        # if response1:
+        # print(response)
+    return render(request, "index.html",{"data" : data})

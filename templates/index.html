@@ -41,90 +41,80 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {% comment %} <link rel="stylesheet" href="{% static 'style.css' %}"> {% endcomment %}
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/chat.css">
-    <link rel="stylesheet" href="/static/css/response.js">
-    <link rel="stylesheet" href="/static/scripts/chat.js">
+    
 
 
 </head>
 <body>
 
-  <div class="container">
 
-    <section style="background-color: #eee;">
-      <div class="container py-5">
-    
-        <div class="row d-flex justify-content-center">
-          <div class="col-md-8 col-lg-6 col-xl-4">
-    
-            <div class="card" id="chat1" style="border-radius: 15px;">
-              <div
-                class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
-                style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                <i class="fas fa-angle-left"></i>
-                <p class="mb-0 fw-bold">Live chat</p>
-                <i class="fas fa-times"></i>
-              </div>
-              
-              <form action="text_input" method="post" >
-                {% csrf_token %}
-                {% comment %} {% for i in data %} {% endcomment %}
-                <div class="card-body">
-    
-                  <div class="d-flex flex-row justify-content-start mb-4">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 45px;">
-                    <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                      <p class="small mb-0">{{i.response}}</p>
-                    </div>
+    <div class="container">
+
+      <section style="background-color: #eee;">
+        <div class="container py-3">
+            {% comment %} <p><b>Current User ID: {{ user_id }}</b></p> {% endcomment %}
+        
+  
+            <div class="row d-flex justify-content-center" style="scroll-behavior: smooth">
+              <div class="col-md-10 col-lg-8 col-xl-6" >
+        
+                <div class="card" id="chat2">
+                  <div class="card-header d-flex justify-content-between align-items-center p-3 bg-dark text-white">
+                    <h5 class="mb-0"><b>ChatBot</b></h5>
+                    <form action="text_input" method="post">
+                      <button type="submit" name="change_user" value="true" class="btn btn-primary " data-mdb-ripple-color="dark">New Chat</button>
+                    </form>
                   </div>
-      
-                  <div class="d-flex flex-row justify-content-end mb-4">
-                    <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
-                      <p class="small mb-0">{{i.user_input}}</p>
-                    </div>
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 45px;">
-                  </div>
-      
-                  {% comment %} <div class="d-flex flex-row justify-content-start mb-4">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 45px;">
-                    <div class="ms-3" style="border-radius: 15px;">
-                      <div class="bg-image">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/screenshot1.webp"
-                          style="border-radius: 15px;" alt="video">
-                        <a href="#!">
-                          <div class="mask"></div>
-                        </a>
+                  <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
+        {% for i in data %}
+        
+        
+        
+                    <div class="d-flex flex-row justify-content-start" >
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                        alt="avatar 1" style="width: 45px; height: 100%;">
+                      <div>
+                        <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">{{i.user_input}}</p>
+                        <p class="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
                       </div>
                     </div>
-                  </div> {% endcomment %}
-      
-                  <div class="d-flex flex-row justify-content-start mb-4">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 45px;">
-                    <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                      <p class="small mb-0"  >{{response}}</p>
+                    <div class="divider d-flex align-items-center mb-4">
+                      <p class="text-center mx-3 mb-0" style="color: #a2aab7;">Today</p>
+                    </div>     
+        
+                  <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                      <div>
+                        <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">{{i.bot_response}}</p>
+                        <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:06</p>
+                      </div>
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
+                        alt="avatar 1" style="width: 45px; height: 100%;">
                     </div>
+          {% endfor %} 
+        
                   </div>
-      
-                  <div class="form-outline">
-                    <textarea class="form-control" id="textAreaExample" rows="4" name="message"></textarea>
-                    <label class="form-label " for="textAreaExample mt-4">Type your message</label>
-                    <button type="submit" class="btn btn-primary mt-4 ml-5" onclick="chatBot()">Send</button> 
-                  </div>
-      
-                </div>
-                {% comment %} {% endfor %} {% endcomment %}
+  
+              </div>
+              <form action="text_input" method="post">
+                  <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                        alt="avatar 3" style="width: 40px; height: 100%;">
+                      <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1"
+                        placeholder="Type message" name="message">
+                        <button class='btn bg-dark text-white' type='submit'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-send-fill mx-2" viewBox="0 0 16 16">
+                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                          </svg>
+                        
+                        </button>
+                    </div>
               </form>
+        
+              </div>
             </div>
-    
+        
           </div>
-        </div>
-    
-      </div>
-    </section>
+        </section>
   
   </div>
   
