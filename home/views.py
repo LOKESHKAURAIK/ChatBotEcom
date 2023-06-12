@@ -18,7 +18,8 @@ import os
 import openai
 
 # os.environ["OPENAI_API_KEY"] = "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"
-
+# from dotenv import load_dotenv
+# load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
