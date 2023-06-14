@@ -19,7 +19,6 @@ import openai
 
 
 # os.environ["OPENAI_API_KEY"] = "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"
-os.environ["OPENAI_API_KEY"] = "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"
 
 
 
