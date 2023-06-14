@@ -16,20 +16,24 @@ from langchain.memory import ConversationBufferMemory
 from .models import Chatbot
 import os
 import openai
+from dotenv import load_dotenv
 
 
 # os.environ["OPENAI_API_KEY"] = "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"
-os.environ["OPENAI_API_KEY"] = "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"
 
 
-
-# from dotenv import load_dotenv
-# load_dotenv()
+#<---  environment variable --->
 # openai.api_key = os.getenv("OPENAI_API_KEY")
+# print(os.getenv("db_password"))
+
+
+load_dotenv()
+print(os.getenv("OPENAI_API_KEY"))
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 
 db_user = "admin"
-db_password = "loku12345"
+db_password = os.getenv("db_password")
 db_host = "myfirstdb.cyxgntsmiing.eu-north-1.rds.amazonaws.com"
 db_name = "my_first_db"
 db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}")
