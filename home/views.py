@@ -57,34 +57,68 @@ llm = ChatOpenAI(model_name="gpt-3.5-turbo")
 
 
 # <--- here is the Customize Prompt --->
-_DEFAULT_TEMPLATE = """Given an input question, first create a syntactically correct {dialect} query to run, then look at the results of the query and return the answer.
+_DEFAULT_TEMPLATE = """ I am a chatbot for ecommerce website. I can help you find products, 
+answer your questions, and provide customer support.
+
+Here are some of the things I can do:
+Show you product details, such as price, description, and reviews.
+Help you find products that match your criteria.
+Answer your questions about products.
+Provide customer support, such as troubleshooting problems and processing returns.
+
+
+I can also have normal conversations with you. I can talk about your interests, listen to your problems, and offer advice.
+
+So, if you have any questions about our products or need help with anything, please don't hesitate to ask. I'm here to help!
+
+This prompt is designed to be informative and helpful. It explains what the chatbot can do and how it can be used. 
+It also sets a friendly and approachable tone.
+
+Here are some specific examples of how the chatbot could be used to show product details and have normal conversations with customers:
+
+A customer could ask the chatbot for the price of a product. The chatbot would then provide the price and any other relevant information, such as the product description and reviews.
+A customer could ask the chatbot about the features of a product. The chatbot would then provide a detailed description of the product's features.
+A customer could ask the chatbot for recommendations for products. The chatbot would then recommend products based on the customer's interests and preferences.
+A customer could ask the chatbot for help with a problem. The chatbot would then try to troubleshoot the problem and offer advice.
+A customer could simply chat with the chatbot about their day. The chatbot would then listen to the customer and offer support and encouragement.
+
+
+ConversationHistory: {table_info}
+
+MemoryContext: {dialect} 
+
 Use the following format:
 
 Question: "Question here"
-SQLQuery: "SQL Query to run"
+SQLQuery: "SQL Query to run"  
 SQLResult: "Result of the SQLQuery"
 Answer: "Final answer here"
 
-Only use the following tables:
 
-{table_info}
 
-If request is about the products, then always give answer as product name and only give Answer after Finished chain.
+ <expert ecommerce advisor> :
 
-Question: {input}"""
+
+Human: {input}
+
+"""
+
 PROMPT = PromptTemplate(
-    input_variables=["input", "table_info", "dialect"], template=_DEFAULT_TEMPLATE
+    input_variables=["dialect", "table_info", "input",], template=_DEFAULT_TEMPLATE
 )
 
 
 
 # <--- Function that generate_response --->
+
 def generate_response(user_input):
-    db_chain = SQLDatabaseSequentialChain.from_llm(llm, 
-                                         db, 
+
+    db_chain = SQLDatabaseChain.from_llm(llm, 
+                                        db, 
                                         # use_query_checker=True,
-                                        # prompt=PROMPT,
+                                        prompt=PROMPT,
                                         verbose=True)
+
     return db_chain.run(user_input)
                                          
 
@@ -99,24 +133,43 @@ def generate_response(user_input):
 
 
 
+def OpenAIFunction(crust):
+
+    completions = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=crust,
+        max_tokens=100,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    return completions["choices"][0]["text"]
+
+
 # <--- Function that taking text_input --->
 @csrf_exempt
 def text_input(request):
     if request.method == "POST":
         user_input = request.POST["message"]
-        response = generate_response(user_input)
-        bot = Chatbot.objects.create(user_input=user_input, bot_response=response)
-        bot.save()
-        data = Chatbot.objects.all()
-        print(data)
-        # response1 = storing_response(user_input)
-        # if response1:
-        # print(response)
-    return render(request, "index.html",{"data" : data})
+        try:    
+            response = generate_response(user_input)
+            bot = Chatbot.objects.create(user_input=user_input, bot_response=response)
+            bot.save()
+            data = Chatbot.objects.all()
+            return render(request, "index.html",{"data" : data})
+        except:
+            prompt = f"You are  <expert Ecommerce Shoppoing advisor>,<having ability to suggest product according to customer interest> <inteligent> human current question:{user_input}\n  Now if human current question: {user_input} for something then ask human for that otherwise give best answer as a shopping advisor "
+            response = OpenAIFunction(prompt)
+            bot = Chatbot.objects.create(user_input=user_input, bot_response=response)
+            bot.save()
+            data = Chatbot.objects.all()
+            return render(request, "index.html",{"data" : data})
+    else:
+        return render(request, "index.html")
 
 def index(request):
     data = Chatbot.objects.all()
-    print(data)
+    # print(data)
         # response1 = storing_response(user_input)
         # if response1:
         # print(response)
