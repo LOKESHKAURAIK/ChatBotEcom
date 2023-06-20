@@ -40,8 +40,8 @@
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {% comment %} <link rel="stylesheet" href="{% static 'style.css' %}"> {% endcomment %}
-    <link rel="stylesheet" href="/static/css/style.css">
-    {% comment %} <style>
+    {% comment %} <link rel="stylesheet" href="/static/css/style.css"> {% endcomment %}
+    <style>
       #chat2 .form-control {
         border-color: transparent;
         }
@@ -63,9 +63,7 @@
         overflow-y: scroll;
         scroll-behavior: smooth
     }
-    </style> {% endcomment %}
-    
-
+    </style> 
 
 </head>
 <body>
@@ -90,8 +88,6 @@
                   </div>
                   <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
         {% for i in data %}
-        
-        
         
                     <div class="d-flex flex-row justify-content-start" >
                       <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"

@@ -19,7 +19,7 @@ import openai
 # from dotenv import load_dotenv
 
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = ""
 
 
 #<---  environment variable --->
